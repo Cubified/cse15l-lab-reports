@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lab Report 1: Week 2</title>
+        <link rel="stylesheet" href="sakura.css" type="text/css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            hr {
+                opacity: 0.25;
+            }
+            .background_shape {
+                width: 105vw;
+                position: fixed;
+                bottom: -20px;
+                left: 0;
+                margin: 0;
+                opacity: 0.15;
+                z-index: -999;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="background_shape.svg" class="background_shape">
+        <h2>Lab Report 1: Remote Access</h2>
+        <h5>Andrew Russell <a href="https://github.com/Cubified">(@Cubified on Github)</a></h5>
+        <h6><a href="mailto:alrussell@ucsd.edu">alrussell@ucsd.edu</a> / UCSD PID: A16879596</h6>
+        <h6>January 14, 2022</h6>
+        <br>
+
+        <h4>Step 1: Installing VS Code</h4>
+        <ul>
+            <h6>Step 1a: Downloading VS Code</h6>
+            <ul>
+                <li>If <a href="https://brew.sh"><code>homebrew</code></a> is installed (if you don't know what this is, ignore this):</li>
+            </ul>
+            <pre><code>$ brew install --cask visual-studio-code</code></pre>
+            <ul>
+                <li>If not:</li>
+                <ul>
+                    <li>Navigate to <a href="https://code.visualstudio.com">https://code.visualstudio.com</a></li>
+                    <li>Click "Download"</li>
+                    <li>Open the downloaded file, and proceed with the onscreen steps</li>
+                </ul>
+            </ul>
+            <h6>Step 1b: Opening VS Code</h6>
+            <ul>
+                <li>Open VS Code from Launchpad (MacOS), the Start Menu (Windows), or the installation directory (Linux)</li>
+            </ul>
+            <h6>Screenshot:</h6>
+            <img src="wk2/step_1.png">
+        </ul>
+
+        <h4>Step 2: Remotely Connecting</h4>
+        <ul>
+            <h6 id="step2a">Step 2a: Finding Your Remote Login, Updating Your Password</h6>
+            <ul>
+                <li>Navigate to <a href="https://sdacs.ucsd.edu/~icc/index.phph">https://sdacs.ucsd.edu/~icc/index.php</a></li>
+                <li>Enter your UCSD username and PID, then click "Submit"</li>
+                <li>Under "Additional Accounts," find the label starting with <code>cs15lwi22</code></li>
+                <li><b>Your remote login will be:</b></li>
+                <pre><code>cs15lwi22ABC@ieng6.ucsd.edu</code></pre>
+                <ul>
+                    <li>Where <code>ABC</code> are the specific characters following <code>cs15lwi22</code></li>
+                </ul>
+                <li>Before you can log in, it may be necessary to <b>reset your password</b>:</li>
+                <ul>
+                    <li>Click the label with your CSE 15L login username</li>
+                    <li>Click "Change your password," and follow the onscreen instructions</li>
+                </ul>
+                <li>Screenshot:</li>
+                <img src="wk2/step_2a.png">
+            </ul>
+            <h6>Step 2b: Opening a Terminal, Running <code>ssh</code></h6>
+            <ul>
+                <li>In VS Code, click the "Terminal" tab in the toolbar</li>
+                <li>Click "New Terminal"</li>
+                <li>In the newly-opened shell session, type the following command:</li>
+                <pre><code>$ ssh cs15lwi22ABC@ieng6.ucsd.edu</code></pre>
+                <ul>
+                    <li>Where <code>ABC</code> are the characters from <a href="#step2a">Step 2a</a></li>
+                </ul>
+                <li><code>ssh</code> will prompt you for your password (<b>but will not show it while you type it</b>), then show a screen similar to:</li>
+                <img src="wk2/step_2b.png">
+            </ul>
+            <h6>Step 2c: Running Commands Non-Interactively</h6>
+            <ul>
+                <li>If you would like to connect to the server, run some specific command(s), then disconnect, <code>ssh</code> can be used as follows:</li>
+                <pre><code>$ ssh cs15lwi22ABC@ieng6.ucsd.edu [commands here]</code></pre>
+                <li>For examples of available commands, see <a href="#step3">Step 3</a></li>
+            </ul>
+        </ul>
+
+        <h4 id="step3">Step 3: Trying Some Commands</h4>
+        <ul>
+            <ul>
+                <li>A <b>command</b> is any program accessible via the shell. A <b>shell</b> is any program allowing users to interface with a computer, and you are now remotely connected to a shell running on a UCSD server.</li>
+                <li>To run any of the following commands, type them into the VS Code terminal session. Any text in <code>[brackets]</code> are <i>optional arguments</i>, and can either be omitted or filled in with the specified information.</li>
+            </ul>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <th><pre><code>$ cd [some directory]</code></pre></th>
+                    <th>Changes the current working directory of the shell</th>
+                </tr>
+                <tr>
+                    <th><pre><code>$ ls [-alh]</code></pre></th>
+                    <th>Lists the contents of the current working directory</th>
+                </tr>
+                <tr>
+                    <th><pre><code>$ cat [some file]</code></pre></th>
+                    <th>Prints the contents of the given file</th>
+                </tr>
+                <tr>
+                    <th><pre><code>$ cp [from] [to] [-r]</code></pre></th>
+                    <th>Copies the file/folder in <code>from</code> to the destination at <code>to</code>, <i>overwriting if the destination already exists</i></th>
+                </tr>
+                <tr>
+                    <th><pre><code>$ exit</code></pre></th>
+                    <th>Ends the current shell session (disconnecting from the remote server)</th>
+                </tr>
+                <tr>
+                    <th><pre><code>$ man [command]</code></pre></th>
+                    <th>Print information about how to use the given command</th>
+                </tr>
+                <tr>
+                    <th><pre><code>$ scp [file] [remote destination]</code></pre></th>
+                    <th>Copy the given file to the given remote destination:  See <a href="#step4">Step 4</a></th>
+                </tr>
+            </table>
+            <li>Screenshot:</li>
+            <img src="wk2/step3.png">
+        </ul>
+
+        <h4 id="step4">Step 4: Moving Files with <code>scp</code></h4>
+        <ul>
+            <li>To copy a file from your local machine to the remote machine, use the <code>scp</code> command</li>
+            <li>The basic form is as follows:</li>
+            <pre><code>$ scp [filename] cs15lwi22ABC@ieng6.ucsd.edu:[path]</code></pre>
+            <ul>
+                <li>
+                    <code>[filename]</code> is the name of the file to be copied from your local machine
+                </li>
+                <li>
+                    <code>[path]</code> is the path on the remote server into which the file should be copied
+                </li>
+                <ul>
+                    <li>To copy to your <b>home directory</b>, type <code>~</code></li>
+                    <li>To copy to any directory <i>within</i> your home directory, type a path of the form <code>~/a/b/c</code></li>
+                </ul>
+                <li>The command will prompt you for your password, then report progress as it copies the file over</li>
+            </ul>
+            <li>Screenshot:</li>
+            <img src="wk2/step4.png">
+        </ul>
+
+        <h4>Step 5: Setting an SSH Key</h4>
+        <ul>
+            <li>In order to avoid entering your password every time you connect, you can set up an <b>SSH key</b></li>
+            <li>In place of entering your password, <code>ssh</code> will perform mathematical computations to determine whether the <b>private key</b> on your machine combines with the server's <b>public key</b> in the way it expects (and whether to allow you to log in)</li>
+            <h6>Step 5a: Generate a New Key Pair</h6>
+            <ul>
+                <li>In a new terminal session, run the command:</li>
+                <pre><code>$ ssh-keygen</code></pre>
+                <li>After pressing enter to every prompt, it should produce output similar to:</li>
+                <img src="wk2/step_5a.png">
+            </ul>
+            <h6>Step 5b: Copy the Public Key</h6>
+            <ul>
+                <li>Now that the key pair has been generated, the public key must be copied to the remote server</li>
+                <li>To do this, execute the following command (and enter your password when prompted):</li>
+                <pre><code>$ scp ~/.ssh/id_rsa.pub cs15lwi22ABC@ieng6.ucsd.edu:~/.ssh/authorized_keys</code></pre>
+                <ul>
+                    <li>Note: This assumes a Unix-like (i.e. MacOS/Linux) environment, this command will fail on Windows</li>
+                </ul>
+            </ul>
+            <h6>Step 5c: Logging In</h6>
+            <ul>
+                <li>Now that the appropriate files have been created and copied, execute:</li>
+                <pre><code>$ ssh cs15lwi22ABC@ieng6.ucsd.edu</code></pre>
+                <li>If everything worked properly, you should no longer be prompted for your password</li>
+            </ul>
+            <li>Screenshot:</li>
+            <img src="wk2/step_2b.png">
+        </ul>
+
+        <h4>Step 6: Optimizing Remote Running</h4>
+        <ul>
+            <li>In no particular order, here are a variety of helpful tips (and GIFs) for navigating the shell more efficiently:</li>
+            <ul>
+                <li><kbd>Tab</kbd> autocompletes whatever you are typing (e.g. filenames, commands, paths, etc.)</li>
+                <img src="wk2/step6_tab.gif">
+                <li><kbd>Up/Down Arrow</kbd> navigate through your command history</li>
+                <img src="wk2/step6_arrow.gif">
+                <li><kbd>Ctrl+A</kbd> and <kbd>Ctrl+E</kbd> navigate to the start/end of the line respectively</li>
+                <img src="wk2/step6_homeend.gif">
+                <li><kbd>Ctrl+Left/Right Arrow</kbd> move the cursor left/right by one word</li>
+                <img src="wk2/step6_word.gif">
+            </ul>
+        </ul>
+    </body>
+</html>

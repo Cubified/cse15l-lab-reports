@@ -7,3 +7,7 @@ This is a placeholder file for the time being.
 Here is my cat:
 
 ![cat](https://cubified.github.io/cse15l-lab-reports/cat.jpg)
+
+<https://github.com/Cubified>
+
+[@Cubified on Github](https://github.com/Cubified)
