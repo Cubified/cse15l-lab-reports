@@ -15,8 +15,8 @@
 
 1. Eggs
 2. Milk
-  1. Whole milk
-  2. 2% milk
+     1. Whole milk
+     2. 2% milk
 3. Butter
 
 ![Warren bear](https://studyabroad.ucsd.edu/_images/majors-maps/major-modules/cse-building.jpg)
