@@ -5,7 +5,7 @@
 ##### Heading 5
 ###### Heading 6
 
-*This* **is a ** ___paragraph___.
+*This* is a ___paragraph___.
 
 > This is a block quote
 >
