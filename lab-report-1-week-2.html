@@ -17,7 +17,18 @@
                 opacity: 0.15;
                 z-index: -999;
             }
+            .fullwidth {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            .center {
+              text-align: center;
+            }
         </style>
+        <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.4.0/styles/default.min.css">
+        <script src="https://unpkg.com/@highlightjs/cdn-assets@11.4.0/highlight.min.js"></script>
     </head>
     <body>
         <img src="background_shape.svg" class="background_shape">
@@ -33,14 +44,14 @@
             <ul>
                 <li>If <a href="https://brew.sh"><code>homebrew</code></a> is installed (if you don't know what this is, ignore this):</li>
             </ul>
-            <pre><code>$ brew install --cask visual-studio-code</code></pre>
+            <pre><code class="language-shell">$ brew install --cask visual-studio-code</code></pre>
             <ul>
                 <li>If not:</li>
-                <ul>
+                <ol>
                     <li>Navigate to <a href="https://code.visualstudio.com">https://code.visualstudio.com</a></li>
                     <li>Click "Download"</li>
                     <li>Open the downloaded file, and proceed with the onscreen steps</li>
-                </ul>
+                </ol>
             </ul>
             <h6>Step 1b: Opening VS Code</h6>
             <ul>
@@ -53,12 +64,12 @@
         <h4>Step 2: Remotely Connecting</h4>
         <ul>
             <h6 id="step2a">Step 2a: Finding Your Remote Login, Updating Your Password</h6>
-            <ul>
+            <ol>
                 <li>Navigate to <a href="https://sdacs.ucsd.edu/~icc/index.phph">https://sdacs.ucsd.edu/~icc/index.php</a></li>
                 <li>Enter your UCSD username and PID, then click "Submit"</li>
                 <li>Under "Additional Accounts," find the label starting with <code>cs15lwi22</code></li>
                 <li><b>Your remote login will be:</b></li>
-                <pre><code>cs15lwi22ABC@ieng6.ucsd.edu</code></pre>
+                <pre><code class="language-plaintext">cs15lwi22ABC@ieng6.ucsd.edu</code></pre>
                 <ul>
                     <li>Where <code>ABC</code> are the specific characters following <code>cs15lwi22</code></li>
                 </ul>
@@ -67,34 +78,37 @@
                     <li>Click the label with your CSE 15L login username</li>
                     <li>Click "Change your password," and follow the onscreen instructions</li>
                 </ul>
-                <li>Screenshot:</li>
+                <li>Verify your screen looks similar to this screenshot:</li>
                 <img src="wk2/step_2a.png">
-            </ul>
+            </ol>
             <h6>Step 2b: Opening a Terminal, Running <code>ssh</code></h6>
-            <ul>
+            <ol>
                 <li>In VS Code, click the "Terminal" tab in the toolbar</li>
                 <li>Click "New Terminal"</li>
                 <li>In the newly-opened shell session, type the following command:</li>
-                <pre><code>$ ssh cs15lwi22ABC@ieng6.ucsd.edu</code></pre>
+                <pre><code class="language-shell">$ ssh cs15lwi22ABC@ieng6.ucsd.edu</code></pre>
                 <ul>
                     <li>Where <code>ABC</code> are the characters from <a href="#step2a">Step 2a</a></li>
                 </ul>
                 <li><code>ssh</code> will prompt you for your password (<b>but will not show it while you type it</b>), then show a screen similar to:</li>
                 <img src="wk2/step_2b.png">
-            </ul>
+            </ol>
             <h6>Step 2c: Running Commands Non-Interactively</h6>
             <ul>
                 <li>If you would like to connect to the server, run some specific command(s), then disconnect, <code>ssh</code> can be used as follows:</li>
-                <pre><code>$ ssh cs15lwi22ABC@ieng6.ucsd.edu [commands here]</code></pre>
-                <li>For examples of available commands, see <a href="#step3">Step 3</a></li>
+                <pre><code class="language-bash">$ ssh cs15lwi22ABC@ieng6.ucsd.edu [commands here]</code></pre>
+                <li>For examples of available commands, see <a href="#step3">Step 3</a>.</li>
             </ul>
         </ul>
 
         <h4 id="step3">Step 3: Trying Some Commands</h4>
         <ul>
             <ul>
-                <li>A <b>command</b> is any program accessible via the shell. A <b>shell</b> is any program allowing users to interface with a computer, and you are now remotely connected to a shell running on a UCSD server.</li>
-                <li>To run any of the following commands, type them into the VS Code terminal session. Any text in <code>[brackets]</code> are <i>optional arguments</i>, and can either be omitted or filled in with the specified information.</li>
+                <li>A <b>command</b> is any program accessible via the shell. A <b>shell</b> is a specific kind of program that allows users to interface with a computer.  You are now remotely connected to a shell running on a UCSD server.</li>
+                <li>To run any of the following commands, type them into the VS Code terminal session which is currently <code>ssh</code>'d into the remote server. Any text in <code>[brackets]</code> are <i>optional arguments</i>, and can either be omitted or filled in with the specified information.</li>
+                <ul>
+                    <li>Note that the <code>$</code> refers to the shell's <b>prompt</b>, and the actual command to be typed is what follows.</li>
+                </ul>
             </ul>
             <table>
                 <tr>
@@ -115,7 +129,7 @@
                 </tr>
                 <tr>
                     <th><pre><code>$ cp [from] [to] [-r]</code></pre></th>
-                    <th>Copies the file/folder in <code>from</code> to the destination at <code>to</code>, <i>overwriting if the destination already exists</i></th>
+                    <th>Copies the file/folder in <code>from</code> to the destination at <code>to</code>, <i>overwriting if the destination already exists</i> (<code>-r</code> is required if copying a folder)</th>
                 </tr>
                 <tr>
                     <th><pre><code>$ exit</code></pre></th>
@@ -136,9 +150,9 @@
 
         <h4 id="step4">Step 4: Moving Files with <code>scp</code></h4>
         <ul>
-            <li>To copy a file from your local machine to the remote machine, use the <code>scp</code> command</li>
+            <li>To copy a file from your local machine to the remote machine, use the <code>scp</code> command.</li>
             <li>The basic form is as follows:</li>
-            <pre><code>$ scp [filename] cs15lwi22ABC@ieng6.ucsd.edu:[path]</code></pre>
+            <pre><code class="language-shell">$ scp [filename] cs15lwi22ABC@ieng6.ucsd.edu:[path]</code></pre>
             <ul>
                 <li>
                     <code>[filename]</code> is the name of the file to be copied from your local machine
@@ -148,9 +162,9 @@
                 </li>
                 <ul>
                     <li>To copy to your <b>home directory</b>, type <code>~</code></li>
-                    <li>To copy to any directory <i>within</i> your home directory, type a path of the form <code>~/a/b/c</code></li>
+                    <li>To copy to any directory or file path <i>within</i> your home directory, type a path of the form <code>~/a/b/c</code></li>
                 </ul>
-                <li>The command will prompt you for your password, then report progress as it copies the file over</li>
+                <li>The command will prompt you for your password, then report progress as it copies the file over.</li>
             </ul>
             <li>Screenshot:</li>
             <img src="wk2/step4.png">
@@ -158,20 +172,20 @@
 
         <h4>Step 5: Setting an SSH Key</h4>
         <ul>
-            <li>In order to avoid entering your password every time you connect, you can set up an <b>SSH key</b></li>
-            <li>In place of entering your password, <code>ssh</code> will perform mathematical computations to determine whether the <b>private key</b> on your machine combines with the server's <b>public key</b> in the way it expects (and whether to allow you to log in)</li>
+            <li>In order to avoid entering your password every time you connect, you can set up an <b>SSH key</b>.</li>
+            <li>In place of entering your password, <code>ssh</code> will perform mathematical computations to determine whether the <b>private key</b> on your machine combines with the server's <b>public key</b> in the way it expects (and whether to allow you to log in).</li>
             <h6>Step 5a: Generate a New Key Pair</h6>
             <ul>
                 <li>In a new terminal session, run the command:</li>
-                <pre><code>$ ssh-keygen</code></pre>
+                <pre><code class="language-shell">$ ssh-keygen</code></pre>
                 <li>After pressing enter to every prompt, it should produce output similar to:</li>
                 <img src="wk2/step_5a.png">
             </ul>
             <h6>Step 5b: Copy the Public Key</h6>
             <ul>
-                <li>Now that the key pair has been generated, the public key must be copied to the remote server</li>
+                <li>Now that the key pair has been generated, the public key must be copied to the remote server.</li>
                 <li>To do this, execute the following command (and enter your password when prompted):</li>
-                <pre><code>$ scp ~/.ssh/id_rsa.pub cs15lwi22ABC@ieng6.ucsd.edu:~/.ssh/authorized_keys</code></pre>
+                <pre><code class="language-shell">$ scp ~/.ssh/id_rsa.pub cs15lwi22ABC@ieng6.ucsd.edu:~/.ssh/authorized_keys</code></pre>
                 <ul>
                     <li>Note: This assumes a Unix-like (i.e. MacOS/Linux) environment, this command will fail on Windows</li>
                 </ul>
@@ -179,11 +193,11 @@
             <h6>Step 5c: Logging In</h6>
             <ul>
                 <li>Now that the appropriate files have been created and copied, execute:</li>
-                <pre><code>$ ssh cs15lwi22ABC@ieng6.ucsd.edu</code></pre>
-                <li>If everything worked properly, you should no longer be prompted for your password</li>
+                <pre><code class="language-shell">$ ssh cs15lwi22ABC@ieng6.ucsd.edu</code></pre>
+                <li>If everything worked properly, you should no longer be prompted for your password.</li>
+                <li>Screenshot:</li>
+                <img src="wk2/step_2b.png">
             </ul>
-            <li>Screenshot:</li>
-            <img src="wk2/step_2b.png">
         </ul>
 
         <h4>Step 6: Optimizing Remote Running</h4>
@@ -200,5 +214,10 @@
                 <img src="wk2/step6_word.gif">
             </ul>
         </ul>
+        <div class="fullwidth">
+          <a href="index.html" class="center">Back to Home</a>
+        </div>
+        
+        <script>hljs.highlightAll();</script>
     </body>
 </html>
