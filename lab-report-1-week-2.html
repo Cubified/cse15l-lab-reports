@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Lab Report 1: Week 2</title>
+        <title>Lab Report 1: Remote Access</title>
         <link rel="stylesheet" href="sakura.css" type="text/css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
@@ -26,9 +26,23 @@
             .center {
               text-align: center;
             }
+
+            .prompt {
+                color: #1b8077;
+            }
+            .cmd {
+                color: #c33fe0;
+            }
+            .arg {
+                color: #3f798c;
+            }
+            .flag {
+                color: #868c3f;
+            }
+            .string {
+                color: #1b751c;
+            }
         </style>
-        <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.4.0/styles/default.min.css">
-        <script src="https://unpkg.com/@highlightjs/cdn-assets@11.4.0/highlight.min.js"></script>
     </head>
     <body>
         <img src="background_shape.svg" class="background_shape">
@@ -44,7 +58,7 @@
             <ul>
                 <li>If <a href="https://brew.sh"><code>homebrew</code></a> is installed (if you don't know what this is, ignore this):</li>
             </ul>
-            <pre><code class="language-shell">$ brew install --cask visual-studio-code</code></pre>
+            <pre><code><span class="prompt">$</span> <span class="cmd">brew</span> <span class="arg">install</span> <span class="flag">--cask</span> <span class="string">visual-studio-code</span></code></pre>
             <ul>
                 <li>If not:</li>
                 <ol>
@@ -69,7 +83,7 @@
                 <li>Enter your UCSD username and PID, then click "Submit"</li>
                 <li>Under "Additional Accounts," find the label starting with <code>cs15lwi22</code></li>
                 <li><b>Your remote login will be:</b></li>
-                <pre><code class="language-plaintext">cs15lwi22ABC@ieng6.ucsd.edu</code></pre>
+                <pre><code><span class="string">cs15lwi22ABC</span>@<span class="prompt">ieng6.ucsd.edu</span></code></pre>
                 <ul>
                     <li>Where <code>ABC</code> are the specific characters following <code>cs15lwi22</code></li>
                 </ul>
@@ -86,7 +100,7 @@
                 <li>In VS Code, click the "Terminal" tab in the toolbar</li>
                 <li>Click "New Terminal"</li>
                 <li>In the newly-opened shell session, type the following command:</li>
-                <pre><code class="language-shell">$ ssh cs15lwi22ABC@ieng6.ucsd.edu</code></pre>
+                <pre><code><span class="prompt">$</span> <span class="cmd">ssh</span> <span class="string">cs15lwi22ABC</span>@<span class="prompt">ieng6.ucsd.edu</span></code></pre>
                 <ul>
                     <li>Where <code>ABC</code> are the characters from <a href="#step2a">Step 2a</a></li>
                 </ul>
@@ -96,7 +110,7 @@
             <h6>Step 2c: Running Commands Non-Interactively</h6>
             <ul>
                 <li>If you would like to connect to the server, run some specific command(s), then disconnect, <code>ssh</code> can be used as follows:</li>
-                <pre><code class="language-bash">$ ssh cs15lwi22ABC@ieng6.ucsd.edu [commands here]</code></pre>
+                <pre><code><span class="prompt">$</span> <span class="cmd">ssh</span> <span class="string">cs15lwi22ABC</span>@<span class="prompt">ieng6.ucsd.edu</span> <span class="arg">[commands here]</span></code></pre>
                 <li>For examples of available commands, see <a href="#step3">Step 3</a>.</li>
             </ul>
         </ul>
@@ -116,31 +130,31 @@
                     <th>Description</th>
                 </tr>
                 <tr>
-                    <th><pre><code>$ cd [some directory]</code></pre></th>
+                    <th><pre><code><span class="prompt">$</span> <span class="cmd">cd</span> <span class="arg">[some directory]</span></code></pre></th>
                     <th>Changes the current working directory of the shell</th>
                 </tr>
                 <tr>
-                    <th><pre><code>$ ls [-alh]</code></pre></th>
+                    <th><pre><code><span class="prompt">$</span> <span class="cmd">ls</span> <span class="flag">[-alh]</span></code></pre></th>
                     <th>Lists the contents of the current working directory</th>
                 </tr>
                 <tr>
-                    <th><pre><code>$ cat [some file]</code></pre></th>
+                    <th><pre><code><span class="prompt">$</span> <span class="cmd">cat</span> <span class="arg">[some file]</span></code></pre></th>
                     <th>Prints the contents of the given file</th>
                 </tr>
                 <tr>
-                    <th><pre><code>$ cp [from] [to] [-r]</code></pre></th>
+                    <th><pre><code><span class="prompt">$</span> <span class="cmd">cp</span> <span class="arg">[from]</span> <span class="arg">[to]</span> <span class="flag">[-r]</span></code></pre></th>
                     <th>Copies the file/folder in <code>from</code> to the destination at <code>to</code>, <i>overwriting if the destination already exists</i> (<code>-r</code> is required if copying a folder)</th>
                 </tr>
                 <tr>
-                    <th><pre><code>$ exit</code></pre></th>
+                    <th><pre><code><span class="prompt">$</span> <span class="cmd">exit</span></code></pre></th>
                     <th>Ends the current shell session (disconnecting from the remote server)</th>
                 </tr>
                 <tr>
-                    <th><pre><code>$ man [command]</code></pre></th>
+                    <th><pre><code><span class="prompt">$</span> <span class="cmd">man</span> <span class="arg">[command]</span></code></pre></th>
                     <th>Print information about how to use the given command</th>
                 </tr>
                 <tr>
-                    <th><pre><code>$ scp [file] [remote destination]</code></pre></th>
+                    <th><pre><code><span class="prompt">$</span> <span class="cmd">scp</span> <span class="arg">[file]</span> <span class="arg">[remote destination]</span></code></pre></th>
                     <th>Copy the given file to the given remote destination:  See <a href="#step4">Step 4</a></th>
                 </tr>
             </table>
@@ -152,7 +166,7 @@
         <ul>
             <li>To copy a file from your local machine to the remote machine, use the <code>scp</code> command.</li>
             <li>The basic form is as follows:</li>
-            <pre><code class="language-shell">$ scp [filename] cs15lwi22ABC@ieng6.ucsd.edu:[path]</code></pre>
+            <pre><code><span class="prompt">$</span> <span class="cmd">scp</span> <span class="arg">[filename]</span> <span class="string">cs15lwi22ABC</span>@<span class="prompt">ieng6.ucsd.edu</span>:<span class="cmd">[path]</span></code></pre>
             <ul>
                 <li>
                     <code>[filename]</code> is the name of the file to be copied from your local machine
@@ -177,7 +191,7 @@
             <h6>Step 5a: Generate a New Key Pair</h6>
             <ul>
                 <li>In a new terminal session, run the command:</li>
-                <pre><code class="language-shell">$ ssh-keygen</code></pre>
+                <pre><code><span class="prompt">$</span> <span class="cmd">ssh-keygen</span></code></pre>
                 <li>After pressing enter to every prompt, it should produce output similar to:</li>
                 <img src="wk2/step_5a.png">
             </ul>
@@ -185,7 +199,7 @@
             <ul>
                 <li>Now that the key pair has been generated, the public key must be copied to the remote server.</li>
                 <li>To do this, execute the following command (and enter your password when prompted):</li>
-                <pre><code class="language-shell">$ scp ~/.ssh/id_rsa.pub cs15lwi22ABC@ieng6.ucsd.edu:~/.ssh/authorized_keys</code></pre>
+                <pre><code><span class="prompt">$</span> <span class="cmd">scp</span> <span class="arg">~/.ssh/id_rsa.pub</span> <span class="string">cs15lwi22ABC</span>@<span class="prompt">ieng6.ucsd.edu</span>:<span class="cmd">~/.ssh/authorized_keys</span></code></pre>
                 <ul>
                     <li>Note: This assumes a Unix-like (i.e. MacOS/Linux) environment, this command will fail on Windows</li>
                 </ul>
@@ -193,7 +207,7 @@
             <h6>Step 5c: Logging In</h6>
             <ul>
                 <li>Now that the appropriate files have been created and copied, execute:</li>
-                <pre><code class="language-shell">$ ssh cs15lwi22ABC@ieng6.ucsd.edu</code></pre>
+                <pre><code><span class="prompt">$</span> <span class="cmd">ssh</span> <span class="string">cs15lwi22ABC</span>@<span class="prompt">ieng6.ucsd.edu</span></code></pre>
                 <li>If everything worked properly, you should no longer be prompted for your password.</li>
                 <li>Screenshot:</li>
                 <img src="wk2/step_2b.png">
@@ -217,7 +231,5 @@
         <div class="fullwidth">
           <a href="index.html" class="center">Back to Home</a>
         </div>
-        
-        <script>hljs.highlightAll();</script>
     </body>
 </html>
