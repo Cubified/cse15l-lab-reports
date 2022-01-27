@@ -30,6 +30,12 @@
                 font-size: 12px;
             }
 
+            img, pre {
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+                border-radius: 10px;
+                margin-bottom: 0;
+            }
+
             .prompt {
                 color: #1b8077;
             }
@@ -52,14 +58,14 @@
         <h2>Lab Report 2: Fixing Bugs</h2>
         <h5>Andrew Russell <a href="https://github.com/Cubified">(@Cubified on Github)</a></h5>
         <h6><a href="mailto:alrussell@ucsd.edu">alrussell@ucsd.edu</a> / UCSD PID: A16879596</h6>
-        <h6>January 25, 2022</h6>
+        <h6>January 28, 2022</h6>
         <br>
 
-        <h4>Code Change 1:</h4>
-        <h6>Diff:  <a href="https://github.com/Cubified/markdown-parse/commit/1df91be0281f16406aac62285e334d2a047984b2">(Direct Link Here)</a></h6>
+        <h4>Code Change 1: Non-Adjacent Square Brackets and Parenthesis</h4>
+        <h6>Diff:  <a href="https://github.com/Cubified/markdown-parse/commit/0402f58a883b1fdcf0a63f80e6549f4d971d2b2f">(Direct Link Here)</a></h6>
         <img src="wk4/diff1.png">
 
-        <h6>Failure-Inducing Input:  <a href="https://raw.githubusercontent.com/Cubified/markdown-parse/main/breaking_test.md">(Direct Link Here)</a></h6>
+        <h6>Failure-Inducing Input:  <a href="https://github.com/Cubified/markdown-parse/blob/main/breaking_test.md">(Direct Link Here)</a></h6>
         <pre><code># Breaking test
 
 ![A link](https://github.com/Cubified)
@@ -69,22 +75,22 @@
 ## spiderman is cool (toby maguire version)
             
 [Another link](https:/https://ucsd-cse15l-w22.github.io/week/week3)</code></pre>
-
+        <br>
         <p class="verysmall">(Evidently I learned I don't know how to spell <i>Tobey</i> Maguire's name)</p>
 
         <h6>Symptom of Failure-Inducing Input:</h6>
         <img src="wk4/symptom1.png">
 
         <h6>Relationship Between Bug, Symptom, and Failure-Inducing Input:</h6>
-        The <b>bug</b> in this version is that the program uses <code>indexOf()</code> to find an open parenthesis following the current close square bracket, but does not verify that the <code>(</code> it may <i>or may not</i> find is immediately following the <code>]</code> (as is necessary for a valid link).
+        The <b>bug</b> in this version is that the program uses <code>indexOf()</code> to find an open parenthesis following the current closing square bracket, but does not verify that the <code>(</code> it may <i>or may not</i> find is immediately following the <code>]</code> (as is necessary for a valid link).
         <br><br>
         The <b>symptom</b> of this bug for the given input is that <code>toby maguire version</code> (sic) is treated as a link attached to the link title <code>hello world</code>, when in reality the text <code>## spiderman is cool</code> is between them and therefore should prevent any link from being recognized.
         
-        <h4 id="code_change_2">Code Change 2:</h4>
-        <h6>Diff:  <a href="https://github.com/Cubified/markdown-parse/commit/1df91be0281f16406aac62285e334d2a047984b2">(Direct Link Here)</a></h6>
+        <h4 id="code_change_2">Code Change 2: Missing Square Bracket</h4>
+        <h6>Diff:  <a href="https://github.com/Cubified/markdown-parse/commit/551d74c351e6bf5c3af307ab5bc9f42637651783">(Direct Link Here)</a></h6>
         <img src="wk4/diff2.png">
 
-        <h6>Failure-Inducing Input:  <a href="https://raw.githubusercontent.com/Cubified/markdown-parse/main/breaking_test_2.md">(Direct Link Here)</a></h6>
+        <h6>Failure-Inducing Input:  <a href="https://github.com/Cubified/markdown-parse/blob/main/breaking_test_2.md">(Direct Link Here)</a></h6>
         <pre><code>](</code></pre>
 
         <h6>Symptom of Failure-Inducing Input:</h6>
@@ -95,18 +101,18 @@
         <br><br>
         The <b>symptom</b> of this bug for the given input is the <code>StringIndexOutOfBoundsException</code> thrown, but the exception itself is thrown farther down in the loop than where this bug occurs.  Assuming we fix this bug, the expected output should be <code>[]</code>, because no valid links are present in <code>breaking_test_2.md</code>.
 
-        <h4>Code Change 3:</h4>
-        <h6>Diff:  <a href="https://github.com/Cubified/markdown-parse/commit/88a802ddcb09e7c8a0a7efe8c35524076f3a2339">(Direct Link Here)</a></h6>
+        <h4>Code Change 3: Missing Closing Parenthesis</h4>
+        <h6>Diff:  <a href="https://github.com/Cubified/markdown-parse/commit/f745761c5c497cce0ad484fea647ff8438ddfa29">(Direct Link Here)</a></h6>
         <img src="wk4/diff3.png">
 
-        <h6>Failure-Inducing Input:  <a href="https://raw.githubusercontent.com/Cubified/markdown-parse/main/breaking_test_3.md">(Direct Link Here)</a></h6>
+        <h6>Failure-Inducing Input:  <a href="https://github.com/Cubified/markdown-parse/blob/main/breaking_test_3.md">(Direct Link Here)</a></h6>
         <pre><code>[a](a</code></pre>
 
         <h6>Symptom of Failure-Inducing Input:</h6>
         <img src="wk4/symptom3.png">
 
         <h6>Relationship Between Bug, Symptom, and Failure-Inducing Input:</h6>
-        The <b>bug</b> in this version is that the program does not check that <code>closeParen</code> is greater than -1 (i.e. that a close parenthesis is found) before calling <code>substring()</code>, resulting in an end index which may be -1 (hence the error message <code>begin 2, end -1</code>)
+        The <b>bug</b> in this version is that the program does not check that <code>closeParen</code> is greater than -1 (i.e. that a closing parenthesis is found) before calling <code>substring()</code>, resulting in an end index which may be -1 (hence the error message <code>begin 2, end -1</code>)
         <br><br>
         The <b>symptom</b> of this bug for the given input is the <code>StringIndexOutOfBoundsException</code> thrown when we would otherwise expect the program to produce <code>[]</code> (i.e. an empty ArrayList because no valid links were found in the file).
         <br><br>
