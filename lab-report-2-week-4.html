@@ -82,9 +82,20 @@
         <img src="wk4/symptom1.png">
 
         <h6>Relationship Between Bug, Symptom, and Failure-Inducing Input:</h6>
-        The <b>bug</b> in this version is that the program uses <code>indexOf()</code> to find an open parenthesis following the current closing square bracket, but does not verify that the <code>(</code> it may <i>or may not</i> find is immediately following the <code>]</code> (as is necessary for a valid link).
-        <br><br>
-        The <b>symptom</b> of this bug for the given input is that <code>toby maguire version</code> (sic) is treated as a link attached to the link title <code>hello world</code>, when in reality the text <code>## spiderman is cool</code> is between them and therefore should prevent any link from being recognized.
+
+        <b>The Bug:</b>
+        <ul>
+            <li>
+                The bug in this version is that the program uses <code>indexOf()</code> to find an open parenthesis following the current closing square bracket, but <b>does not verify that the <code>(</code> it may <i>or may not</i> find is immediately following the <code>]</code></b> (as is necessary for a valid link).
+            </li>
+        </ul>
+
+        <b>The Symptom and Relation to Failure-Inducing Input:</b>
+        <ul>
+            <li>
+                The symptom of this bug for the given input is that <b><code>toby maguire version</code> (sic) is treated as a link attached to the link title <code>hello world</code></b>, when in reality the text <code>## spiderman is cool</code> is between them and therefore should prevent any link from being recognized.
+            </li>
+        </ul>
         
         <h4 id="code_change_2">Code Change 2: Missing Square Bracket</h4>
         <h6>Diff:  <a href="https://github.com/Cubified/markdown-parse/commit/551d74c351e6bf5c3af307ab5bc9f42637651783">(Direct Link Here)</a></h6>
@@ -97,9 +108,20 @@
         <img src="wk4/symptom2.png">
 
         <h6>Relationship Between Bug, Symptom, and Failure-Inducing Input:</h6>
-        The <b>bug</b> in this version is that the program does not verify that it found an open square bracket (i.e. that <code>nextOpenBracket</code> is greater than -1) before continuing on and attempting to parse the link.
-        <br><br>
-        The <b>symptom</b> of this bug for the given input is the <code>StringIndexOutOfBoundsException</code> thrown, but the exception itself is thrown farther down in the loop than where this bug occurs.  Assuming we fix this bug, the expected output should be <code>[]</code>, because no valid links are present in <code>breaking_test_2.md</code>.
+
+        <b>The Bug:</b>
+        <ul>
+            <li>
+                The bug in this version is that the program <b>does not verify that it found an open square bracket</b> (i.e. that <code>nextOpenBracket</code> is greater than -1) before continuing on and attempting to parse the link.
+            </li>
+        </ul>
+        
+        <b>The Symptom and Relation to Failure-Inducing Input:</b>
+        <ul>
+            <li>
+                The symptom of this bug for the given input is <b>the <code>StringIndexOutOfBoundsException</code> thrown</b>, but <i>the exception itself is thrown farther down in the loop than where this bug occurs</i>.  Assuming we fix this bug, the expected output should be <code>[]</code>, because no valid links are present in <code>breaking_test_2.md</code>.
+            </li>
+        </ul>
 
         <h4>Code Change 3: Missing Closing Parenthesis</h4>
         <h6>Diff:  <a href="https://github.com/Cubified/markdown-parse/commit/f745761c5c497cce0ad484fea647ff8438ddfa29">(Direct Link Here)</a></h6>
@@ -112,11 +134,24 @@
         <img src="wk4/symptom3.png">
 
         <h6>Relationship Between Bug, Symptom, and Failure-Inducing Input:</h6>
-        The <b>bug</b> in this version is that the program does not check that <code>closeParen</code> is greater than -1 (i.e. that a closing parenthesis is found) before calling <code>substring()</code>, resulting in an end index which may be -1 (hence the error message <code>begin 2, end -1</code>)
-        <br><br>
-        The <b>symptom</b> of this bug for the given input is the <code>StringIndexOutOfBoundsException</code> thrown when we would otherwise expect the program to produce <code>[]</code> (i.e. an empty ArrayList because no valid links were found in the file).
-        <br><br>
-        <i>This is <b>the same symptom</b> that was present in <a href="#code_change_2">code change 2</a>, but manifests itself as a result of a different bug.</i>
+
+        <b>The Bug:</b>
+        <ul>
+            <li>
+                The bug in this version is that the program <b>does not check that <code>closeParen</code> is greater than -1</b> (i.e. that a closing parenthesis is found) <b>before calling <code>substring()</code></b>, resulting in an end index which may be -1 (hence the error message <code>begin 2, end -1</code>)
+            </li>
+        </ul>
+        
+        
+        <b>The Symptom and Relation to Failure-Inducing Input:</b>
+        <ul>
+            <li>
+                The symptom of this bug for the given input is <b>the <code>StringIndexOutOfBoundsException</code> thrown</b> when we would otherwise expect the program to produce <code>[]</code> (i.e. an empty ArrayList because no valid links were found in the file).
+            </li>
+            <li>
+                <i>This is <b>the same symptom</b> that was present in <a href="#code_change_2">code change 2</a>, but manifests itself as a result of a different bug.</i>
+            </li>
+        </ul>
 
         <br>
         <br>
