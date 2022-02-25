@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lab Report 4: Fixing Snippets</title>
+        <link rel="stylesheet" href="sakura.css" type="text/css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            hr {
+                opacity: 0.25;
+            }
+            .background_shape {
+                width: 105vw;
+                position: fixed;
+                bottom: -20px;
+                left: 0;
+                margin: 0;
+                opacity: 0.15;
+                z-index: -999;
+            }
+            .fullwidth {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            .center {
+              text-align: center;
+            }
+            .small {
+                font-size: 12px;
+            }
+            .block {
+              background: white;
+              padding: 10px;
+              padding-top: 20px;
+              margin: 20px;
+              border: 5px solid gray;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="background_shape.svg" class="background_shape">
+        <h2>Lab Report 4: Fixing Snippets</h2>
+        <h5>Andrew Russell <a href="https://github.com/Cubified">(@Cubified on Github)</a></h5>
+        <h6><a href="mailto:alrussell@ucsd.edu">alrussell@ucsd.edu</a> / UCSD PID: A16879596</h6>
+        <h6>February 25, 2022</h6>
+        <br>
+
+        <h4>Part 0: Repository Links</h4>
+        <ul>
+          <li>My repository: <a href="https://github.com/Cubified/markdown-parse">https://github.com/Cubified/markdown-parse</a></li>
+          <li>Reviewed repository: <a href="https://github.com/maotcha/markdown-parse">https://github.com/maotcha/markdown-parse</a></li>
+        </ul>
+
+        <h4>Part 1: First Snippet</h4>
+        <h6>Expected Output (Using <a href="https://spec.commonmark.org/dingus">CommonMark</a>):</h6>
+        <div class="block">
+          <p><code>[a link</code>](url.com)</p>
+          <p><a href="%60google.com">another link</a>`</p>
+          <p><a href="google.com"><code>cod[e</code></a></p>
+          <p><a href="ucsd.edu"><code>code]</code></a></p>
+        </div>
+        <h6>Code in <code>MarkdownParseTest.java</code>:</h6>
+        <div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+          <pre style="margin: 0; line-height: 125%">
+<span style="color: #555555; font-weight: bold">@Test</span>
+<span style="color: #008800; font-weight: bold">public</span> <span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">testGetLinks_snippet1</span><span style="color: #333333">()</span> <span style="color: #333333">{</span>
+  String str <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;`[a link`](url.com)&quot;</span> <span style="color: #333333">+</span>
+    <span style="background-color: #fff0f0">&quot;[another link](`google.com)`&quot;</span> <span style="color: #333333">+</span>
+    <span style="background-color: #fff0f0">&quot;[`cod[e`](google.com)&quot;</span> <span style="color: #333333">+</span>
+    <span style="background-color: #fff0f0">&quot;[`code]`](ucsd.edu)&quot;</span><span style="color: #333333">;</span>
+  assertEquals<span style="color: #333333">(</span>
+    <span style="background-color: #fff0f0">&quot;Validate MarkdownParse on snippet 1&quot;</span><span style="color: #333333">,</span>
+    List<span style="color: #333333">.</span><span style="color: #0000CC">of</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;`google.com&quot;</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;google.com&quot;</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;ucsd.edu&quot;</span><span style="color: #333333">),</span>
+    MarkdownParse<span style="color: #333333">.</span><span style="color: #0000CC">getLinks</span><span style="color: #333333">(</span>str<span style="color: #333333">)</span>
+  <span style="color: #333333">);</span>
+<span style="color: #333333">}</span>
+        </pre></div>
+        <h6>My Implementation:</h6>
+        <pre><code>JUnit version 4.13.2
+.......E.........
+Time: 0.008
+There was 1 failure:
+1) testGetLinks_snippet1(MarkdownParseTest)
+java.lang.AssertionError: Validate MarkdownParse on snippet 1 expected:<[`google.com, google.com, ucsd.edu]> but was:<[url.com, `google.com, google.com]>
+        at org.junit.Assert.fail(Assert.java:89)
+        at org.junit.Assert.failNotEquals(Assert.java:835)
+        at org.junit.Assert.assertEquals(Assert.java:120)
+        at MarkdownParseTest.testGetLinks_snippet1(MarkdownParseTest.java:170)
+
+FAILURES!!!
+Tests run: 16,  Failures: 1
+
+make: *** [test] Error 1</code></pre>
+        <h6><code>maotcha</code>'s Implementation:</h6>
+        <pre><code>JUnit version 4.13.2
+...E..
+Time: 0.007
+There was 1 failure:
+2) testGetLinks_snippet1(MarkdownParseTest)
+java.lang.AssertionError: Validate MarkdownParse on snippet 1 expected:<[`google.com, google.com, ucsd.edu]> but was:<[url.com]>
+        at org.junit.Assert.fail(Assert.java:89)
+        at org.junit.Assert.failNotEquals(Assert.java:835)
+        at org.junit.Assert.assertEquals(Assert.java:120)
+        at MarkdownParseTest.testGetLinks_snippet1(MarkdownParseTest.java:51)
+
+FAILURES!!!
+Tests run: 6,  Failures: 1
+
+make: *** [test] Error 1</code></pre>
+
+        <h4>Part 2: Second Snippet</h4>
+        <h6>Expected Output (Using <a href="https://spec.commonmark.org/dingus">CommonMark</a>):</h6>
+        <div class="block">
+          <p><code>[a link</code>](url.com)</p>
+          <p><a href="%60google.com">another link</a>`</p>
+          <p><a href="google.com"><code>cod[e</code></a></p>
+          <p><a href="ucsd.edu"><code>code]</code></a></p>
+        </div>
+        <h6>Code in <code>MarkdownParseTest.java</code>:</h6>
+        <div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #555555; font-weight: bold">@Test</span>
+<span style="color: #008800; font-weight: bold">public</span> <span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">testGetLinks_snippet2</span><span style="color: #333333">()</span> <span style="color: #333333">{</span>
+    String str <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;[a [nested link](a.com)](b.com)&quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;[a nested parenthesized url](a.com(()))&quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;[some escaped \\[ brackets \\]](example.com)&quot;</span><span style="color: #333333">;</span>
+    assertEquals<span style="color: #333333">(</span>
+        <span style="background-color: #fff0f0">&quot;Validate MarkdownParse on snippet 2&quot;</span><span style="color: #333333">,</span>
+        List<span style="color: #333333">.</span><span style="color: #0000CC">of</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;a.com&quot;</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;a.com(())&quot;</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;example.com&quot;</span><span style="color: #333333">),</span>
+        MarkdownParse<span style="color: #333333">.</span><span style="color: #0000CC">getLinks</span><span style="color: #333333">(</span>str<span style="color: #333333">)</span>
+    <span style="color: #333333">);</span>
+<span style="color: #333333">}</span>
+</pre></div>
+        <h6>My Implementation:</h6>
+        <pre><code>JUnit version 4.13.2
+.......E.E..........
+Time: 0.008
+There were 2 failures:
+
+[ First failure omitted for clarity ]
+
+2) testGetLinks_snippet2(MarkdownParseTest)
+java.lang.AssertionError: Validate MarkdownParse on snippet 2 expected:<[a.com, a.com(()), example.com]> but was:<[a.com, a.com((]>
+        at org.junit.Assert.fail(Assert.java:89)
+        at org.junit.Assert.failNotEquals(Assert.java:835)
+        at org.junit.Assert.assertEquals(Assert.java:120)
+        at MarkdownParseTest.testGetLinks_snippet2(MarkdownParseTest.java:182)
+
+FAILURES!!!
+Tests run: 17,  Failures: 2
+
+make: *** [test] Error 1</code></pre>
+        <h6><code>maotcha</code>'s Implementation:</h6>
+        <pre><code>JUnit version 4.13.2
+..E..E.E...
+Time: 0.006
+There were 3 failures:
+
+[ First two failures omitted for clarity ]
+
+3) testGetLinks_snippet2(MarkdownParseTest)
+java.lang.AssertionError: Validate MarkdownParse on snippet 2 expected:<[a.com, a.com(()), example.com]> but was:<[a.com)](b.com]>
+        at org.junit.Assert.fail(Assert.java:89)
+        at org.junit.Assert.failNotEquals(Assert.java:835)
+        at org.junit.Assert.assertEquals(Assert.java:120)
+        at MarkdownParseTest.testGetLinks_snippet2(MarkdownParseTest.java:63)
+
+FAILURES!!!
+Tests run: 7,  Failures: 3
+
+make: *** [test] Error 1</code></pre>
+
+        <h4>Part 3: Third Snippet</h4>
+        <h6>Expected Output (Using <a href="https://spec.commonmark.org/dingus">CommonMark</a>):</h6>
+        <div class="block">
+          <p>[this title text is really long and takes up more than
+          one line</p>
+          <p>and has some line breaks](
+          https://www.twitter.com
+          )</p>
+          <p><a href="https://ucsd-cse15l-w22.github.io/">this title text is really long and takes up more than
+          one line</a></p>
+          <p>[this link doesn't have a closing parenthesis](github.com</p>
+          <p>And there's still some more text after that.</p>
+          <p>[this link doesn't have a closing parenthesis for a while](https://cse.ucsd.edu/</p>
+          <p>)</p>
+          <p>And then there's more text</p>
+        </div>
+        <h6>Code in <code>MarkdownParseTest.java</code>:</h6>
+<div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #555555; font-weight: bold">@Test</span>
+<span style="color: #008800; font-weight: bold">public</span> <span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">testGetLinks_snippet3</span><span style="color: #333333">()</span> <span style="color: #333333">{</span>
+    String str <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;[this title text is really long and takes up more than &quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;one line&quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;and has some line breaks](&quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;    https://www.twitter.com&quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;)&quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;[this title text is really long and takes up more than &quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;one line](&quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;    https://ucsd-cse15l-w22.github.io/&quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;)&quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;[this link doesn&#39;t have a closing parenthesis](github.com&quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;And there&#39;s still some more text after that.&quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;[this link doesn&#39;t have a closing parenthesis for a while](https://cse.ucsd.edu/&quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;)&quot;</span> <span style="color: #333333">+</span>
+        <span style="background-color: #fff0f0">&quot;And then there&#39;s more text&quot;</span><span style="color: #333333">;</span>
+
+    assertEquals<span style="color: #333333">(</span>
+        <span style="background-color: #fff0f0">&quot;Validate MarkdownParse on snippet 3&quot;</span><span style="color: #333333">,</span>
+        List<span style="color: #333333">.</span><span style="color: #0000CC">of</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;https://ucsd-cse15l-w22.github.io/&quot;</span><span style="color: #333333">),</span>
+        MarkdownParse<span style="color: #333333">.</span><span style="color: #0000CC">getLinks</span><span style="color: #333333">(</span>str<span style="color: #333333">)</span>
+    <span style="color: #333333">);</span>
+<span style="color: #333333">}</span></pre></div>
+        <h6>My Implementation:</h6>
+        <pre><code>JUnit version 4.13.2
+.......E.E.E.........
+Time: 0.007
+There were 3 failures:
+
+[ First two failures omitted for clarity ]
+
+3) testGetLinks_snippet3(MarkdownParseTest)
+java.lang.AssertionError: Validate MarkdownParse on snippet 3 expected:<[https://ucsd-cse15l-w22.github.io/]> but was:<[https://www.twitter.com, https://ucsd-cse15l-w22.github.io/, https://cse.ucsd.edu/]>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at MarkdownParseTest.testGetLinks_snippet3(MarkdownParseTest.java:206)
+
+FAILURES!!!
+Tests run: 18,  Failures: 3
+
+make: *** [test] Error 1</pre></code>
+        <h6><code>maotcha</code>'s Implementation:</h6>
+        <pre><code>JUnit version 4.13.2
+..E..E.E.E..
+Time: 0.007
+There were 4 failures:
+
+[ First three failures omitted for clarity ]
+
+4) testGetLinks_snippet3(MarkdownParseTest)
+java.lang.StringIndexOutOfBoundsException: begin 89, end -1, length 89
+	at java.base/java.lang.String.checkBoundsBeginEnd(String.java:4601)
+	at java.base/java.lang.String.substring(String.java:2704)
+	at MarkdownParse.getLinks(MarkdownParse.java:26)
+	at MarkdownParse.getLinks(MarkdownParse.java:35)
+	at MarkdownParseTest.testGetLinks_snippet3(MarkdownParseTest.java:90)
+
+FAILURES!!!
+Tests run: 8,  Failures: 4
+
+make: *** [test] Error 1</pre></code>
+
+        <h4>Part 4: Conclusion</h4>
+        <ol>
+          <li>Yes, a simple fix could be to look for a backtick whenever between links (i.e. at the very start of the program or after a close parenthesis is encountered).  If a backtick is encountered, <b>gather the substring between it and its matching closing backtick, and parse that substring for links on its own</b>.  However, if a matching closing backtick is not found, treat the backtick as a normal character and ignore it.</li>
+          <li><b>No</b>, although there are steps we can take to fix the broken tests (<b>such as using a stack to find matching square brackets, then parsing only the innermost/deepest level of the stack as a link whenever a close bracket is encountered</b>), robustly fixing nested or escaped parenthesis/brackets cannot be done in under 10 lines.</li>
+          <ul>
+            <li><i>The <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">Shunting-yard algorithm</a> is a fairly common and simple stack-based algorithm for doing this, but will take more than 10 lines to implement well.</i></li>
+          </ul>
+          <li>Yes, one possible fix is to <b>check for consecutive newlines within a possible link's title or URL, and discard the entire link if multiple are encountered anywhere</b>.  This could be done by using <b><code>markdown.indexOf("\n\n", nextOpenBracket)</code></b>, then comparing the output to ensure it is less than <code>closeParen</code> and greater than <code>-1</code>.</li>
+        </ol>
+
+        <br>
+        <div class="fullwidth">
+          <a href="index.html" class="center">Back to Home</a>
+        </div>
+    </body>
+</html>
