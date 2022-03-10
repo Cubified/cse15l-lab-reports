@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lab Report 5: Buggy Behavior</title>
+        <link rel="stylesheet" href="sakura.css" type="text/css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            hr {
+                opacity: 0.25;
+            }
+            .background_shape {
+                width: 105vw;
+                position: fixed;
+                bottom: -20px;
+                left: 0;
+                margin: 0;
+                opacity: 0.15;
+                z-index: -999;
+            }
+            .fullwidth {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            .center {
+              text-align: center;
+            }
+            .small {
+                font-size: 12px;
+            }
+            .block {
+              background: white;
+              padding: 10px;
+              padding-top: 20px;
+              margin: 20px;
+              border: 5px solid gray;
+            }
+            .light {
+              color: #999999;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="background_shape.svg" class="background_shape">
+        <h2>Lab Report 5: Buggy Behavior</h2>
+        <h5>Andrew Russell <a href="https://github.com/Cubified">(@Cubified on Github)</a></h5>
+        <h6><a href="mailto:alrussell@ucsd.edu">alrussell@ucsd.edu</a> / UCSD PID: A16879596</h6>
+        <h6>March 11, 2022</h6>
+        <br>
+
+        <h4>Part 0: How I Found Breaking Tests</h4>
+        <ul>
+          <li>First, I <code>diff</code>'d the output from the two implementations:</li>
+          <pre><code><span class="light">andrew@earth:~/my-mdp </span>$ ./script.sh &gt; results.txt
+<span class="light">andrew@earth:~/my-mdp </span>$ cd ../joe-mdp
+<span class="light">andrew@earth:~/joe-mdp </span>$ ./script.sh &gt; results.txt
+<span class="light">andrew@earth:~/joe-mdp </span>$ diff results.txt ../my-mdp/results.txt</code></pre>
+          <li>Then, I searched through the diff manually until I found differences that I thought could be interesting to explore.</li>
+          <ul>
+            <li>For <a href="#part1">Part 1</a>, how both implementations handle nested parentheses seemed worth looking into.</li>
+            <li>For <a href="#part2">Part 2</a>, how they handle line breaks within links seemed interesting as well.</li>
+          </ul>
+        </ul>
+
+        <h4 id="part1">Part 1: <code>test-files/495.md</code></h4>
+        <h6>File Contents:</h6>
+        <pre><code>[link](foo(and(bar)))</code></pre>
+        <h6>Output and Correctness:</h6>
+        <ul>
+          <li>My Code:</li>
+          <pre><code>[foo(and(bar]</code></pre>
+          <li>Joe's Code:</li>
+          <pre><code>[foo(and(bar))]</code></pre>
+          <li>Expected Output (Using <a href="https://spec.commonmark.org/dingus">CommonMark Dingus</a>):</li>
+          <pre><code>[foo(and(bar))]</code></pre>
+          <li>Because the output of Joe's code and the CommonMark reference implementation match, I think <b>Joe's code is correct and mine is not</b>.</li>
+        </ul>
+        <h6>The Bug in my Code:</h6>
+<div style="font-size: 10pt; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="color: #999999; margin: 0; line-height: 125%">83
+84
+85
+86
+87</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #333399; font-weight: bold">int</span> nextOpenBracket <span style="color: #333333">=</span> markdown<span style="color: #333333">.</span><span style="color: #0000CC">indexOf</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;[&quot;</span><span style="color: #333333">,</span> currentIndex<span style="color: #333333">),</span>
+    nextCloseBracket <span style="color: #333333">=</span> markdown<span style="color: #333333">.</span><span style="color: #0000CC">indexOf</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;]&quot;</span><span style="color: #333333">,</span> currentIndex<span style="color: #333333">),</span>
+    openParen <span style="color: #333333">=</span> markdown<span style="color: #333333">.</span><span style="color: #0000CC">indexOf</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;(&quot;</span><span style="color: #333333">,</span> nextCloseBracket<span style="color: #333333">),</span>
+    closeParen <span style="color: #333333">=</span> markdown<span style="color: #333333">.</span><span style="color: #0000CC">indexOf</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;)&quot;</span><span style="color: #333333">,</span> openParen<span style="color: #333333">);</span>
+<span style="color: #888888">//  ^ This last line is wrong!</span>
+</pre></td></tr></table></div><br>
+        <ul>
+          <li>My <code>MarkdownParse</code> <b>does not use a loop/stack to do bracket/parentheses matching</b>, therefore it will never be able to correctly match nested parentheses.</li>
+          <li>To fix, I should add a stack-based algorithm to find the close parenthesis that matches a link's open parenthesis.</li>
+          <ul>
+            <li>(I was working on doing this during Lab 9, but was not able to finish in time)</li>
+          </ul>
+        </ul>
+
+        <h4 id="part2">Part 2: <code>test-files/489.md</code></h4>
+        <h6>File Contents:</h6>
+        <pre><code>[link](foo
+bar)</code></pre>
+        <h6>Output and Correctness:</h6>
+        <ul>
+          <li>My Code:</li>
+          <pre><code>[foo
+bar]</code></pre>
+          <li>Joe's Code:</li>
+          <pre><code>[]</code></pre>
+          <li>Expected Output (Using <a href="https://spec.commonmark.org/dingus">CommonMark Dingus</a>):</li>
+          <pre><code>[]</code></pre>
+          <li>Because the output of Joe's code and the CommonMark reference implementation match, I think <b>Joe's code is correct and mine is not</b>.</li>
+        </ul>
+        <h6>The Bug in my Code:</h6>
+<div style="font-size:10pt;overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="color: #999999; margin: 0; line-height: 125%">98
+99
+100
+101
+102
+103
+104</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #888888">// Note: This is after brackets/parentheses have been validated</span>
+
+<span style="color: #333399; font-weight: bold">int</span> double_break <span style="color: #333333">=</span> markdown<span style="color: #333333">.</span><span style="color: #0000CC">indexOf</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;\n\n&quot;</span><span style="color: #333333">,</span> currentIndex<span style="color: #333333">);</span>
+<span style="color: #008800; font-weight: bold">if</span><span style="color: #333333">(</span>double_break <span style="color: #333333">&gt;</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span> <span style="color: #333333">&amp;&amp;</span> double_break <span style="color: #333333">&lt;</span> closeParen<span style="color: #333333">){</span>
+    currentIndex <span style="color: #333333">=</span> closeParen <span style="color: #333333">+</span> <span style="color: #0000DD; font-weight: bold">1</span><span style="color: #333333">;</span>
+<span style="color: #333333">}</span>
+<span style="color: #888888">// Need another check here! (For &quot;\n&quot; after openParen and before closeParen)</span>
+</pre></td></tr></table></div><br>
+        <ul>
+          <li>My <code>MarkdownParse</code> checks for double line breaks (i.e. <code>\n\n</code>) anywhere in the link's title or URL, <b>without checking for a single line break character</b> (i.e. <code>\n</code> on its own) <b>in the link's URL</b>.</li>
+          <li>To fix, I should add an additional <code>indexOf()</code> check performed on the link's URL (i.e. what is added to the <code>toReturn</code> ArrayList).</li>
+          <ul>
+            <li>My behavior of checking for double line breaks is correct (it should invalidate a potential link), but this second check is also needed.</li>
+          </ul>
+        </ul>
+        <br>
+        <div class="fullwidth">
+          <a href="index.html" class="center">Back to Home</a>
+        </div>
+    </body>
+</html>
